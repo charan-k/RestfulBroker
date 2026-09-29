@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "confluence-mcp": {
+            "command": "uvx",
+            "args": [
+                "mcp-atlassian"
+            ],
+            "env": {
+                "CONFLUENCE_URL" :"https://epam-elite.atlassian.net/wiki",
+                "CONFLUENCE_USERNAME" :"charan_kumar@epam.com",
+                "CONFLUENCE_API_TOKEN" :"ATATT3xFfGF0_DzwzkbB0wbG1IYA0r4rRMFhPauOQEvUSeUpsuvWPaigKV1k2icu2vHWTTXxvTn4Z6NNeTdLcja8rVZUrWQw4mEFWZMpUTvOO9o2ir7K1rNpheUdO57Z5mdnf85LQdzUTfa7bI0w-jlT7Hgd1zmwuOvZpq9HVqSq91u6XwakJ-k=31D22ED4"
+ 
+            },
+            "type": "stdio"
+        },
+        "jira-mcp": {
+      "command": "npx",
+      "args": ["-y", "mcp-jira-server"],
+      "env": {
+        "JIRA_BASE_URL": "https://jiraeu.epam.com",
+        "JIRA_PAT": "cnXLQlRs4YM6gxPCDfF1DpPxPtp4j5Ls0ceFiC"
+      }},
+   
+     "gitlab-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@structured-world/gitlab-mcp"],
+      "env": {
+        "GITLAB_TOKEN": "Wdwp2752X46bpSrTjMD-",
+        "GITLAB_API_URL": "https://git.epam.com",
+        "GITLAB_PROJECT_ID": "295295",
+        "AUTHENTICATED_USER": "charan_kumar@epam.com"
+      }
+    }      
+  }
+}

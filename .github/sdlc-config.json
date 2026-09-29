@@ -1,0 +1,15 @@
+{
+  "orgName": "EPAM",
+  "git": {
+    "host": "git.epam.com",
+    "organization": "aicoe"
+  },
+  "jiraPrefix": "CAP",
+  "techStack": {
+    "language": "C#",
+    "framework": ".NET 8",
+    "apiClient": "RestSharp",
+    "testFramework": "NUnit"
+  },
+  "ciCd": "GitHub Actions"
+}
