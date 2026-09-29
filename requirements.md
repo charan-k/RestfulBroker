@@ -58,13 +58,12 @@ API test project.
 20. The suite must support local execution through `dotnet test`.
 21. The suite must produce NUnit XML test results in the repository-relative
     `TestResults/` directory.
-22. The implementation must include and maintain both CI definitions:
-    - `.gitlab-ci.yml` for GitLab CI/CD.
-    - `.github/workflows/api-tests.yml` for GitHub Actions.
-23. Both CI definitions must execute the API suite on Merge Request / Pull
-    Request events and manually triggered pipeline runs.
-24. Both CI definitions must publish the NUnit XML result from `TestResults/`
-    as a CI artifact.
+22. The implementation must include and maintain a GitHub Actions CI
+    definition at `.github/workflows/api-tests.yml`.
+23. The GitHub Actions workflow must execute the API suite on Pull Request
+    events and manually triggered workflow runs.
+24. The GitHub Actions workflow must publish the NUnit XML result from
+    `TestResults/` as a workflow artifact.
 
 ## Non-Functional Requirements
 
@@ -91,10 +90,10 @@ API test project.
 - Performance, load, stress, penetration, or security testing beyond the
   specified API authentication-negative scenarios.
 - Creating or maintaining a production Restful Booker API service.
-- Automatically creating GitLab Merge Requests or GitHub Pull Requests without
-  explicit human approval.
-- Storing Git, Jira, GitLab, GitHub, or API credentials in committed
-  repository files.
+- Automatically creating GitHub Pull Requests without explicit human
+  approval.
+- Storing Git, Jira, GitHub, or API credentials in committed repository
+  files.
 - Supporting API clients or test frameworks other than RestSharp and NUnit for
   this initial implementation.
 
@@ -102,10 +101,8 @@ API test project.
 
 - **Not Found:** The exact externally supplied credential variable names for
   Restful Booker authentication have not been selected.
-- **Not Found:** The exact GitLab repository SSH URL and remote repository
-  name have not been provided.
-- **Not Found:** The GitLab and GitHub CI secret names/configuration mechanism
-  for Restful Booker credentials have not been selected.
+- **Not Found:** The GitHub Actions secret names/configuration mechanism for
+  Restful Booker credentials have not been selected.
 - **Not Found:** A required maximum test-suite execution time has not been
   defined.
 - **Not Found:** CI test-report retention duration has not been defined.
