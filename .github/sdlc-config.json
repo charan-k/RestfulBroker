@@ -1,8 +1,8 @@
 {
   "orgName": "EPAM",
   "git": {
-    "host": "git.epam.com",
-    "organization": "aicoe"
+    "host": "github.com",
+    "organization": "charan-k"
   },
   "jiraPrefix": "EPMCDMETST",
   "techStack": {

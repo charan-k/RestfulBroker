@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: 'Performs structured self-review against a fixed checklist before PR creation'
+description: 'Performs structured self-review against a fixed checklist before Merge Request creation'
 tools: ['codebase', 'search', 'usages', 'problems']
 ---
 
@@ -21,7 +21,7 @@ do not review planning documents.
 ## Output
 For each checklist item: state PASS/FAIL/PARTIAL with a one-line reason.
 If FAIL or PARTIAL, propose the specific fix (code diff or file change).
-Summarize overall readiness for PR at the end: Ready / Not Ready + blockers.
+Summarize overall readiness for Merge Request at the end: Ready / Not Ready + blockers.
 
 ## Available Skills
 - `/check-dependency-safety` — scans manifest files (package.json, requirements.txt,

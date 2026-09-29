@@ -1,0 +1,27 @@
+{
+  "ticket": "EPMCDMETST-66948",
+  "current_phase": "verification",
+  "status": "in_progress",
+  "phases_completed": [
+    "requirements",
+    "architecture",
+    "design-review",
+    "impl-planning",
+    "implementation",
+    "review"
+  ],
+  "artifact_pending_approval": null,
+  "scope_change": {
+    "decision": "GitHub (https://github.com/charan-k/RestfulBroker.git) is the sole canonical origin; GitLab dropped entirely; CI is GitHub Actions only",
+    "approved_by_human": true,
+    "artifacts_amended": [
+      "requirements.md",
+      "architecture.md",
+      "design-review.md",
+      "impl-plan.md",
+      ".github/sdlc-config.json"
+    ],
+    "artifacts_pending_amendment": []
+  },
+  "last_updated": "2026-09-29T16:04:00Z"
+}

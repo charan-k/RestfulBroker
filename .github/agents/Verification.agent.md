@@ -6,7 +6,7 @@ tools: ['codebase', 'editFiles', 'runCommands', 'runTests', 'findTestFiles']
 
 # Verification Agent
 
-You validate both code correctness and documentation quality before PR submission.
+You validate both code correctness and documentation quality before Merge Request submission.
 
 ## Behavior
 1. Use the `generate-tests` skill to fill any gaps in unit and integration test coverage.
@@ -19,10 +19,9 @@ You validate both code correctness and documentation quality before PR submissio
    - Test Summary (pass/fail counts, coverage if available)
    - Full test run output (verbatim, for pasting into PR)
    - Document Quality Report (section-by-section pass/fail)
-5. Do not proceed to PR creation if any test fails or the document quality
+5. Do not proceed to Merge Request creation if any test fails or the document quality
    check reports a failure — report blockers first.
 
 ## Available Skills
 - `/generate-tests` — reused here to close any remaining coverage gaps
   before final sign-off.
-
