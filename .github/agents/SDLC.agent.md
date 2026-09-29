@@ -3,7 +3,7 @@ name: sdlc
 description: >
   Runs an end-to-end, approval-gated SDLC pipeline for a Jira ticket across
   requirements, architecture, design review, planning, implementation, code
-  review, verification, and Merge Request creation.
+  review, verification, and Pull Request creation.
 tools:
   - codebase
   - search
@@ -52,7 +52,7 @@ Use the repository-root artifact names already established by the phase agents:
 | `impl-plan.md` | Implementation Planning |
 | `impl-manifest.md` | Implementation |
 | `verification-report.md` | Verification |
-| `CHANGELOG.md` | Merge Request creation, when a changelog entry is applicable |
+| `CHANGELOG.md` | Pull Request creation, when a changelog entry is applicable |
 
 Do not create duplicate per-ticket copies of these artifacts. Pipeline state is
 stored separately at `.github/sdlc-state/<TICKET>.pipeline-status.json`.
@@ -68,7 +68,7 @@ stored separately at `.github/sdlc-state/<TICKET>.pipeline-status.json`.
 | 5 | Implementation | `@Implementation` | code, tests, `impl-manifest.md` |
 | 6 | Code Review | `@code-review` | complete seven-point review result |
 | 7 | Verification | `@Verification` | `verification-report.md` |
-| 8 | Merge Request Creation | `@PR` | approved Merge Request description, changelog entry, and open Merge Request |
+| 8 | Pull Request Creation | `@PR` | approved Pull Request description, changelog entry, and open Pull Request |
 
 ## Non-Negotiable Rules
 
@@ -83,7 +83,7 @@ stored separately at `.github/sdlc-state/<TICKET>.pipeline-status.json`.
   dependency is a hard blocker until the human explicitly accepts the risk.
 - Never proceed from Design Review while critical risks remain unresolved,
   unless the human explicitly records acceptance of each risk.
-- Never skip Phase 8. If a Merge Request cannot be opened, mark the pipeline blocked and
+- Never skip Phase 8. If a Pull Request cannot be opened, mark the pipeline blocked and
   explain the exact missing capability or approval.
 
 ## Argument Parsing and Preconditions
@@ -119,6 +119,10 @@ State rules:
 - Only after the human explicitly approves the phase, append it to
   `phases_completed`, set `current_phase` to the next phase, clear
   `artifact_pending_approval`, and set `status` to `"in_progress"`.
+- After Phase 8's approved Pull Request is created and its URL is confirmed,
+  append `pr` to `phases_completed`, record `pull_request_url`, set
+  `current_phase` to `"complete"`, clear `artifact_pending_approval`, and set
+  `status` to `"completed"`.
 - On `stop` or `pause`, set `status` to `"paused"` and preserve
   `current_phase`.
 - On failure, set `status` to `"failed"` and record the phase and a concise
@@ -278,21 +282,21 @@ perform the final document quality check. Require it to write
 `verification-report.md` containing: Test Summary, Full Test Output, and
 Document Quality Report.
 
-Do not proceed to Merge Request creation if a test or required document-quality check
+Do not proceed to Pull Request creation if a test or required document-quality check
 fails. Mark the pipeline blocked and report the failing evidence.
 
-### Phase 8: Merge Request Creation
+### Phase 8: Pull Request Creation
 
-Before opening a Merge Request:
+Before opening a Pull Request:
 
-1. Check that GitLab CLI (`glab`) or the configured GitLab integration is
-   authenticated and can create a Merge Request. If not, report `"Not Found"` with the
+1. Check that GitHub CLI (`gh`) or the configured GitHub integration is
+   authenticated and can create a Pull Request. If not, report `"Not Found"` with the
    unavailable capability and mark the pipeline blocked.
-2. Use `@PR` to assemble the Merge Request description, changelog entry, and Reviewer
+2. Use `@PR` to assemble the Pull Request description, changelog entry, and Reviewer
    Checklist only from verified artifacts.
-3. Present the assembled Merge Request body and changelog entry to the human.
-4. Open the Merge Request only after explicit human approval of that content.
-5. Confirm the created Merge Request URL before marking the pipeline complete.
+3. Present the assembled Pull Request body and changelog entry to the human.
+4. Open the Pull Request only after explicit human approval of that content.
+5. Confirm the created Pull Request URL before marking the pipeline complete.
 
 ## Required Output Validation
 
@@ -305,7 +309,7 @@ Before opening a Merge Request:
 | `impl-manifest.md` | Summary, Files Created, Files Modified, Test Files, Baseline Test Counts, Final Test Counts |
 | Phase 6 review output | Correctness, Security, Error Handling, Test Coverage, Code Clarity, DRY Principle, Dependency Safety |
 | `verification-report.md` | Test Summary, Full Test Output, Document Quality Report |
-| Merge Request description | Summary, Changes Made, Test Evidence, Known Limitations, Reviewer Checklist |
+| Pull Request description | Summary, Changes Made, Test Evidence, Known Limitations, Reviewer Checklist |
 
 If validation fails, state the missing sections, mark the current phase
 blocked, and ask the human whether to revise or stop. Never silently continue.
