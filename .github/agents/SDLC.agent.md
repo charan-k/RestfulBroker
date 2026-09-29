@@ -3,7 +3,7 @@ name: sdlc
 description: >
   Runs an end-to-end, approval-gated SDLC pipeline for a Jira ticket across
   requirements, architecture, design review, planning, implementation, code
-  review, verification, and Pull Request creation.
+  review, verification, and Merge Request creation.
 tools:
   - codebase
   - search
@@ -52,7 +52,7 @@ Use the repository-root artifact names already established by the phase agents:
 | `impl-plan.md` | Implementation Planning |
 | `impl-manifest.md` | Implementation |
 | `verification-report.md` | Verification |
-| `CHANGELOG.md` | PR Creation, when a changelog entry is applicable |
+| `CHANGELOG.md` | Merge Request creation, when a changelog entry is applicable |
 
 Do not create duplicate per-ticket copies of these artifacts. Pipeline state is
 stored separately at `.github/sdlc-state/<TICKET>.pipeline-status.json`.
@@ -68,7 +68,7 @@ stored separately at `.github/sdlc-state/<TICKET>.pipeline-status.json`.
 | 5 | Implementation | `@Implementation` | code, tests, `impl-manifest.md` |
 | 6 | Code Review | `@code-review` | complete seven-point review result |
 | 7 | Verification | `@Verification` | `verification-report.md` |
-| 8 | Pull Request Creation | `@PR` | approved PR description, changelog entry, and open PR |
+| 8 | Merge Request Creation | `@PR` | approved Merge Request description, changelog entry, and open Merge Request |
 
 ## Non-Negotiable Rules
 
@@ -83,7 +83,7 @@ stored separately at `.github/sdlc-state/<TICKET>.pipeline-status.json`.
   dependency is a hard blocker until the human explicitly accepts the risk.
 - Never proceed from Design Review while critical risks remain unresolved,
   unless the human explicitly records acceptance of each risk.
-- Never skip Phase 8. If a PR cannot be opened, mark the pipeline blocked and
+- Never skip Phase 8. If a Merge Request cannot be opened, mark the pipeline blocked and
   explain the exact missing capability or approval.
 
 ## Argument Parsing and Preconditions
@@ -161,6 +161,44 @@ If Phase 3 identifies critical risks or gaps:
 4. Re-run `@DesignReview` against the revised architecture.
 5. Enter Phase 4 only when critical risks are resolved or the human has
    explicitly accepted them in the review artifact.
+
+### Git Remote Preflight Before Phase 5
+
+Before creating implementation code, read `.github/sdlc-config.json` and
+verify the configured `git.host` and `git.organization`. Then verify:
+
+1. The workspace is a Git repository:
+
+   ```powershell
+   git rev-parse --is-inside-work-tree
+   ```
+
+2. A remote named `origin` exists:
+
+   ```powershell
+   git remote get-url origin
+   ```
+
+3. SSH authentication to the configured Git host succeeds:
+
+   ```powershell
+   ssh -T git@<git.host>
+   ```
+
+If `origin` is missing, stop and ask the human to provide the approved SSH
+clone URL, for example:
+
+```text
+git@<git.host>:<git.organization>/<repository-name>.git
+```
+
+Add `origin` only after the human explicitly approves that exact URL. If SSH
+authentication fails, stop and tell the human to add their local public key to
+their Git-host account, then wait for confirmation before retrying.
+
+Do not begin Phase 5 until Git repository validation, `origin`, and SSH
+authentication all succeed. Never read, print, create, or store private SSH
+keys, access tokens, or passwords.
 
 ### Phase 5: Implementation
 
@@ -240,21 +278,21 @@ perform the final document quality check. Require it to write
 `verification-report.md` containing: Test Summary, Full Test Output, and
 Document Quality Report.
 
-Do not proceed to PR creation if a test or required document-quality check
+Do not proceed to Merge Request creation if a test or required document-quality check
 fails. Mark the pipeline blocked and report the failing evidence.
 
-### Phase 8: Pull Request Creation
+### Phase 8: Merge Request Creation
 
-Before opening a PR:
+Before opening a Merge Request:
 
-1. Check that GitHub CLI or the configured GitHub integration is authenticated
-   and can create a Pull Request. If not, report `"Not Found"` with the
+1. Check that GitLab CLI (`glab`) or the configured GitLab integration is
+   authenticated and can create a Merge Request. If not, report `"Not Found"` with the
    unavailable capability and mark the pipeline blocked.
-2. Use `@PR` to assemble the PR description, changelog entry, and Reviewer
+2. Use `@PR` to assemble the Merge Request description, changelog entry, and Reviewer
    Checklist only from verified artifacts.
-3. Present the assembled PR body and changelog entry to the human.
-4. Open the Pull Request only after explicit human approval of that content.
-5. Confirm the created PR URL before marking the pipeline complete.
+3. Present the assembled Merge Request body and changelog entry to the human.
+4. Open the Merge Request only after explicit human approval of that content.
+5. Confirm the created Merge Request URL before marking the pipeline complete.
 
 ## Required Output Validation
 
@@ -267,7 +305,7 @@ Before opening a PR:
 | `impl-manifest.md` | Summary, Files Created, Files Modified, Test Files, Baseline Test Counts, Final Test Counts |
 | Phase 6 review output | Correctness, Security, Error Handling, Test Coverage, Code Clarity, DRY Principle, Dependency Safety |
 | `verification-report.md` | Test Summary, Full Test Output, Document Quality Report |
-| PR description | Summary, Changes Made, Test Evidence, Known Limitations, Reviewer Checklist |
+| Merge Request description | Summary, Changes Made, Test Evidence, Known Limitations, Reviewer Checklist |
 
 If validation fails, state the missing sections, mark the current phase
 blocked, and ask the human whether to revise or stop. Never silently continue.

@@ -1,0 +1,42 @@
+name: Restful Booker API Tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      BOOKER_BASE_URL: ${{ vars.BOOKER_BASE_URL != '' && vars.BOOKER_BASE_URL || 'https://restful-booker.herokuapp.com' }}
+      BOOKER_USERNAME: ${{ secrets.BOOKER_USERNAME }}
+      BOOKER_PASSWORD: ${{ secrets.BOOKER_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore packages
+        run: dotnet restore ./RestfulBookerApiTests/RestfulBookerApiTests.csproj
+
+      - name: Run API test suite
+        run: |
+          mkdir -p TestResults
+          dotnet test ./RestfulBookerApiTests/RestfulBookerApiTests.csproj \
+            --logger "nunit;LogFileName=restful-booker.xml" \
+            --results-directory ./TestResults
+
+      - name: Upload NUnit XML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restful-booker-nunit-results
+          path: ./TestResults/*.xml
+          if-no-files-found: warn

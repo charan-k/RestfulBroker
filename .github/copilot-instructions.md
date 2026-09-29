@@ -15,7 +15,7 @@
   design-review.md, impl-plan.md, the Verification report, and CHANGELOG.md.
   Always read these before writing new content; never duplicate them.
 - Any change proposed by an agent must be explicitly approved by a human
-  before it is applied — this includes implementation edits, PR creation,
+  before it is applied — this includes implementation edits, Merge Request creation,
   and updates to architecture.md after a design review.
 - The "Not Found" marker is canonical. Use it verbatim inside written
   documents (not just chat) so downstream agents can detect unresolved

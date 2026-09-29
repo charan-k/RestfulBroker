@@ -5,10 +5,10 @@ PR Agent
 
 ## Purpose
 Produces a changelog entry in Keep a Changelog format (Added/Changed/Fixed)
-reflecting only the actual diff introduced by this PR.
+reflecting only the actual diff introduced by this Merge Request.
 
 ## Trigger
-Invoked during Step 8 (PR), alongside the PR description generation.
+Invoked during Step 8 (Merge Request), alongside the Merge Request description generation.
 
 ## Inputs
 - The code diff / list of files changed in the current implementation.

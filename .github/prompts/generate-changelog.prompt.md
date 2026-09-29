@@ -1,8 +1,8 @@
 ---
 mode: 'pr-agent'
-description: 'Generate a changelog entry for the current PR'
+description: 'Generate a changelog entry for the current Merge Request'
 ---
-Based on the changes made in this PR, generate a changelog entry using
+Based on the changes made in this Merge Request, generate a changelog entry using
 Keep a Changelog format:
 
 ### Added
