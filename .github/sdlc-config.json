@@ -4,7 +4,7 @@
     "host": "git.epam.com",
     "organization": "aicoe"
   },
-  "jiraPrefix": "CAP",
+  "jiraPrefix": "EPMCDMETST",
   "techStack": {
     "language": "C#",
     "framework": ".NET 8",
